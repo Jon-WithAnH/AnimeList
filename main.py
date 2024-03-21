@@ -26,7 +26,7 @@ with MySqlConnector() as sql:
                 s3 = sql.getRankingByShowAndUser(searchResult.ShowId, uid)
                 if s3.score != each.rankDetails.score:
                     # they don't. update details
-                    sql.insertRankChange(uid, s3.rankId, s3.rankId, each.rankDetails.score)
+                    sql.insertRankChange(uid, s3.rankId, s3.score, each.rankDetails.score)
                     sql.updateRankByRankingId(s3.rankId, each.rankDetails.score)
                     runtimeChanges += 1
 print(f"New Shows: {newShows}")
