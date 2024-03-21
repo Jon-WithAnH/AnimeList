@@ -56,7 +56,7 @@ class MySqlConnector:
         return self.curser.fetchone()[0]
     def insertRankChange(self, userId: int, rankId: int, oldRank: int, newRank: int):
         # since this is only an audit record, I'm not going to return anything
-        self.curser.execute(f"insert into AnimeWatchList_RankingChanges (UserId,RankingId,OldScore,NewScore) values {userId},{rankId},{oldRank},{newRank}")
+        self.curser.execute(f"insert into AnimeWatchList_RankingChanges (UserId,RankingId,OldScore,NewScore) values ({userId},{rankId},{oldRank},{newRank})")
         self.commit()
 
     def insertFirstShowScore(self, showId, userId, rank: AnimeShowRanking):
