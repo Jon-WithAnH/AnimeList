@@ -1,0 +1,57 @@
+-- db will never grow enough to the point where indexes will matter, so i stopped bothering with them.
+
+create table AnimeWatchList_Shows (
+RecordId int primary key auto_INCREMENT,
+ShowId int not null unique,
+Title varchar(8000) not null,
+MediumImage varchar(2000) NULL,
+LargeImage varchar(2000) NULL,
+Created datetime default NOW(),
+Modified datetime default NOW() on update now(),
+);
+
+create index IDX_ShowId on AnimeWatchList_Shows(ShowId);
+
+create Table AnimeWatchList_Users(
+UserId  int primary key auto_INCREMENT,
+UserName varchar(500) unique not null,
+FriendlyName varchar(500) unique null,
+Created datetime default now()
+);
+
+create table AnimeWatchList_ShowRankings (
+RankingId int primary key auto_INCREMENT,
+ShowId int not null unique,
+UserId int not null,
+Status varchar(500) null,
+Score tinyint not null,
+NumberEpisodesWatched int null,
+IsRewatching varchar(100),
+UpdatedAt date,
+Created datetime default NOW(),
+Modified datetime default NOW() on update now(),
+constraint FK_ShowRankings_UserId FOREIGN KEY (UserId) REFERENCES AnimeWatchList_Users(UserId),
+constraint FK_ShowRankings_ShowId FOREIGN KEY (ShowId) REFERENCES AnimeWatchList_Shows(ShowId)
+);
+
+create table AnimeWatchList_AnimeLists(
+UserId int,
+ShowId int,
+RankingId int,
+Active bit default 1,
+constraint FK_AnimeLists_UserId FOREIGN KEY (UserId) REFERENCES AnimeWatchList_Users(UserId),
+constraint FK_AnimeLists_ShowId FOREIGN KEY (ShowId) REFERENCES AnimeWatchList_Shows(ShowId)
+);
+
+create index IDX_ShowId_UserId on AnimeWatchList_AnimeLists(ShowId, UserId);
+create table AnimeWatchList_RankingChanges(
+AuditId int primary key auto_INCREMENT,
+UserId int not null,
+RankingId int not null,
+OldScore tinyint not null,
+NewScore tinyint not null,
+Created datetime default now(),
+constraint FK_RankingChanges_UserId FOREIGN KEY (UserId) REFERENCES AnimeWatchList_Users(UserId),
+constraint FK_RankingChanges_RankingId FOREIGN KEY (RankingId) REFERENCES AnimeWatchList_ShowRankings(RankingId)
+);
+
