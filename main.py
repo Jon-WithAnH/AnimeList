@@ -4,7 +4,6 @@ from util.api.MySql import MySqlConnector
 t = AnimeList()
 UsersICareAbout = ['Tiddilywinkus']
 
-listings = t.getAnimes(UsersICareAbout[0])
 runtimeChanges = 0
 newShows = 0
 with MySqlConnector() as sql:
